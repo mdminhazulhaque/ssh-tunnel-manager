@@ -12,7 +12,7 @@ A PyQt GUI to manage SSH tunnels
 
 ## Configuration
 
-There is a dummy configuration file provide `config.json.example`. Here is one sample host entry.
+A sample configuration file provide as `config.json.example`. Here is one sample host entry.
 
 ```json
 {
