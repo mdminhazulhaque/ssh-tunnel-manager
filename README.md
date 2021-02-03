@@ -9,6 +9,7 @@ A PyQt GUI to manage SSH tunnels
 * Install dependencies: `pip3 install PyQt5`
 * Create a config: `cp config.json.example config.json`
 * Run the app: `python3 app.py`
+* You can modify `sshtunnelmgr.desktop` and put in `~/.local/share/application` to create a app menu shortcut
 
 ## Configuration
 

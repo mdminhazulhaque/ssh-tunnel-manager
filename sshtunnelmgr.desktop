@@ -1,0 +1,11 @@
+[Desktop Entry]
+Categories=Network
+Comment=Tunnel Manager
+Exec=/path/to/ssh-tunnel-manager/app.py
+Path=/path/to/ssh-tunnel-manager
+Icon=/usr/share/icons/Adwaita/32x32/legacy/network-vpn.png
+Name=Tunnel Manager
+StartupNotify=true
+Terminal=false
+Type=Application
+Version=1.0
