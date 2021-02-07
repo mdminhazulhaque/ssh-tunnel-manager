@@ -36,6 +36,8 @@ The key `browser_open` is optional. If provided, it will open the provided URL i
 
 The application saves the tunnel information into a `dict` and can `kill` it when the `Stop` button is clicked.
 
+> (Unsafe) To allow SSH to bind on privileged ports, run this `sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/ssh`
+
 ## TODO
 
 * Gracefully close SSH session instead of `kill`
