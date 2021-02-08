@@ -34,7 +34,7 @@ class STRINGS:
     ICON_START = "kt-start"
     ICON_STOP = "kt-stop"
     
-    SSH_PATH = "/usr/bin/ssh"
+    SSH_PATH = "ssh"
     
     HEADER_NAME = "Name"
     HEADER_LOCAL_ADDRESS = "Local Address"
