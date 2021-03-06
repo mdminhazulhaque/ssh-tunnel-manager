@@ -6,128 +6,109 @@ __license__ = "GPLv3"
 
 from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QApplication, QGridLayout
 from PyQt5.QtCore import QProcess, Qt, QUrl
-from PyQt5.QtGui import QIcon, QDesktopServices
+from PyQt5.QtGui import QIcon, QDesktopServices, QPixmap
+from PyQt5 import uic
 import sys
 import json
 
-try:
-    with open("config.json") as fp:
-        HOSTS = json.load(fp)
-except:
-    sys.stderr.write("Error loading config.json\n")
-    exit(1)
-
-class STRINGS:
+class LANG:
     TITLE = "SSH Tunnel Manager"
     START = "Start"
     STOP = "Stop"
-    
+    ADD = "Add"
+    CLOSE = "Close"
     QSS_START = "QPushButton { background-color: #5cb85c; }"
     QSS_STOP = "QPushButton { background-color: #d43f3a; }"
-    
-    LOCAL_ADDRESS = "local_address"
     REMOTE_ADDRESS = "remote_address"
+    LOCAL_PORT = "local_port"
     PROXY_HOST = "proxy_host"
     BROWSER_OPEN = "browser_open"
-    
+    ICON = "icon"
     ICON_WINDOW = "network-vpn"
     ICON_START = "kt-start"
     ICON_STOP = "kt-stop"
-    
-    SSH_PATH = "ssh"
-    
+    SSH = "ssh"
     HEADER_NAME = "Name"
     HEADER_LOCAL_ADDRESS = "Local Address"
     HEADER_REMOTE_ADDRESS = "Remote Address"
     HEADER_JUMP_HOST = "Proxy Host"
     HEADER_ACTION = "Action"
     
-class TunnelManager(QWidget):
-    
-    def __init__(self):
-        super().__init__()
-        self.initUI()
-                
-    def initUI(self):
-        self.grid = QGridLayout(self)
+class Tunnel(QWidget):
+    def __init__(self, name, data):
+        super(Tunnel, self).__init__()
+        uic.loadUi("tunnel.ui", self)
         
-        self.grid.addWidget(QLabel(STRINGS.HEADER_NAME), 0, 0)
-        self.grid.addWidget(QLabel(STRINGS.HEADER_LOCAL_ADDRESS), 0, 1)
-        self.grid.addWidget(QLabel(STRINGS.HEADER_REMOTE_ADDRESS), 0, 2)
-        self.grid.addWidget(QLabel(STRINGS.HEADER_JUMP_HOST), 0, 3)
-        self.grid.addWidget(QLabel(STRINGS.HEADER_ACTION), 0, 4)
+        self.name.setText(name)
+        self.icon.setPixmap(QPixmap("./icons/"+name))
+        self.remote_address.setText(data[LANG.REMOTE_ADDRESS])
+        self.proxy_host.setText(data[LANG.PROXY_HOST])
+        self.browser_open.setText(data[LANG.BROWSER_OPEN])
+        self.local_port.setValue(data[LANG.LOCAL_PORT])
         
-        for i, host in enumerate(HOSTS):
-            tunnel_info = HOSTS[host]
-            name = QLabel(host)
-            
-            proxy_host = QLineEdit(tunnel_info[STRINGS.PROXY_HOST])
-            proxy_host.setDisabled(True)
-            
-            remote_address = QLineEdit(tunnel_info[STRINGS.REMOTE_ADDRESS])
-            remote_address.setDisabled(True)
-            
-            local_address = QLineEdit(tunnel_info[STRINGS.LOCAL_ADDRESS])
-            local_address.setDisabled(True)
-            
-            action = QPushButton(STRINGS.START)
-            action.setStyleSheet(STRINGS.QSS_START)
-            action.setIcon(QIcon.fromTheme(STRINGS.ICON_START))
-            action.clicked.connect(self.do_tunnel)
-            
-            self.grid.addWidget(name, i+1, 0)
-            self.grid.addWidget(local_address, i+1, 1)
-            self.grid.addWidget(remote_address, i+1, 2)
-            self.grid.addWidget(proxy_host, i+1, 3)
-            self.grid.addWidget(action, i+1, 4)
-        
-        self.setLayout(self.grid)
-        self.resize(650, 100)
-        self.setWindowTitle(STRINGS.TITLE)
-        self.setWindowIcon(QIcon.fromTheme(STRINGS.ICON_WINDOW))
-        self.show()
-        
-        self.tunnels = {}
+        self.action.clicked.connect(self.do_tunnel)
+        self.action.setStyleSheet(LANG.QSS_START)
+        self.proxy_host.setHidden(True)
         
     def do_tunnel(self):
-        button = self.sender()
-        idx = self.grid.indexOf(button)
-        row, _, _, _ = self.grid.getItemPosition(idx)
+        local_port = self.local_port.value()
+        remote_address = self.remote_address.text()
+        proxy_host = self.proxy_host.text()
         
-        name = self.grid.itemAtPosition(row, 0).widget().text()
-        tunnel_info = HOSTS[name]
-        
-        local_address = tunnel_info[STRINGS.LOCAL_ADDRESS]
-        remote_address = tunnel_info[STRINGS.REMOTE_ADDRESS]
-        proxy_host = tunnel_info[STRINGS.PROXY_HOST]
-        
-        action = button.text()
-        
-        if action == STRINGS.START:
-            process = QProcess()
-            process.start(
-                STRINGS.SSH_PATH,
-                ["-L", F"{local_address}:{remote_address}", proxy_host]
-            )
-            self.tunnels[name] = process
+        if self.action.text() == LANG.START:
+            param = ["-L", F"127.0.0.1:{local_port}:{remote_address}", proxy_host]            
             
-            button.setText(STRINGS.STOP)
-            button.setStyleSheet(STRINGS.QSS_STOP)
-            button.setIcon(QIcon.fromTheme(STRINGS.ICON_STOP))
+            self.process = QProcess()
+            self.process.start(LANG.SSH, param)
             
-            url = tunnel_info.get(STRINGS.BROWSER_OPEN)
-            if url:
-                QDesktopServices.openUrl(QUrl(url))
-        elif action == STRINGS.STOP:
-            process = self.tunnels[name]
-            process.kill()
-            process.close()
-            del self.tunnels[name]
+            self.action.setText(LANG.STOP)
+            self.action.setStyleSheet(LANG.QSS_STOP)
             
-            button.setText(STRINGS.START)
-            button.setStyleSheet(STRINGS.QSS_START)
-            button.setIcon(QIcon.fromTheme(STRINGS.ICON_START))
+            if self.browser_open.text().startswith("http"):
+                QDesktopServices.openUrl(QUrl(self.browser_open.text()))
+        else:
+            self.process.kill()
+            self.process.close()
+            
+            self.action.setText(LANG.START)
+            self.action.setStyleSheet(LANG.QSS_START)
+
+class TunnelManager(QWidget):
+    def __init__(self):
+        super().__init__()
         
+        with open("config.json", "r") as fp:
+            data = json.load(fp)
+            
+        self.grid = QGridLayout(self)
+        self.tunnels = []
+        
+        for i, name in enumerate(data):
+            tunnel = Tunnel(name, data[name])
+            self.tunnels.append(tunnel)
+            self.grid.addWidget(tunnel, i, 0)
+        
+        self.setLayout(self.grid)
+        self.resize(700, 100)
+        self.setWindowTitle(LANG.TITLE)
+        self.setWindowIcon(QIcon.fromTheme(LANG.ICON_WINDOW))
+        self.show()
+        
+    #def closeEvent(self, event):
+        #data = {}
+        #for tunnel in self.tunnels:
+            #name = tunnel.name.text()
+            #data[name] = {
+                #LANG.REMOTE_ADDRESS: tunnel.remote_address.text(),
+                #LANG.PROXY_HOST: tunnel.proxy_host.text(),
+                #LANG.LOCAL_PORT: tunnel.local_port.value(),
+                #LANG.BROWSER_OPEN: tunnel.browser_open.text()
+            #}
+        #print(json.dumps(data, indent=2))
+        #with open("config.json", "w") as fp:
+            #json.dumps(data, fp)
+        #event.accept()
+    
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = TunnelManager()
