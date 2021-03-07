@@ -54,6 +54,7 @@ class Tunnel(QWidget):
         local_port = self.local_port.value()
         remote_address = self.remote_address.text()
         proxy_host = self.proxy_host.text()
+        browser_open = self.browser_open.text()
         
         if self.action.text() == LANG.START:
             param = ["-L", F"127.0.0.1:{local_port}:{remote_address}", proxy_host]            
@@ -64,8 +65,7 @@ class Tunnel(QWidget):
             self.action.setText(LANG.STOP)
             self.action.setStyleSheet(LANG.QSS_STOP)
             
-            if self.browser_open.text().startswith("http"):
-                QDesktopServices.openUrl(QUrl(self.browser_open.text()))
+            QDesktopServices.openUrl(QUrl(F"{browser_open}:{local_port}"))
         else:
             self.process.kill()
             self.process.close()

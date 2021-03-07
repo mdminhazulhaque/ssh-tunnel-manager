@@ -21,7 +21,7 @@ A sample configuration file provide as `config.example.json`. Here is one sample
     "remote_address": "10.10.10.11:30000",
     "local_port": 30000,
     "proxy_host": "another-proxy-host",
-    "browser_open": "http://127.0.0.1:30000"
+    "browser_open": "http://127.0.0.1"
   }
 }
 ```
@@ -32,7 +32,7 @@ This entry, when clicked `Start`, will run the following SSH command to establis
 ssh -L 10.10.10.11:30000:127.0.0.1:30000 dummy-proxy-host
 ```
 
-The key `browser_open` is optional. If provided, it will open the provided URL in the system's default web browser.
+The key `browser_open` is optional. If provided, it will open the provided URL in the system's default web browser. (The `local_port` will be appended to the URL automatically!)
 
 The application saves the tunnel information into a `dict` and can `kill` it when the `Stop` button is clicked.
 
