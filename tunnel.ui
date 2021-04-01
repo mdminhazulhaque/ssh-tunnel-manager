@@ -6,15 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>645</width>
-    <height>46</height>
+    <width>360</width>
+    <height>32</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
    <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
     <number>0</number>
    </property>
    <property name="bottomMargin">
@@ -43,50 +52,69 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="name">
-     <property name="placeholderText">
-      <string>name</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QSpinBox" name="local_port">
-     <property name="maximum">
-      <number>65365</number>
-     </property>
-     <property name="singleStep">
-      <number>1000</number>
-     </property>
-     <property name="value">
-      <number>8443</number>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="remote_address">
-     <property name="placeholderText">
-      <string>10.10.10.10:443</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="proxy_host">
-     <property name="placeholderText">
-      <string>proxy-host</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="browser_open">
-     <property name="placeholderText">
-      <string>https://127.0.0.1:8443</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="action">
+    <widget class="QLabel" name="name">
      <property name="text">
-      <string>Start</string>
+      <string>TextLabel</string>
+     </property>
+     <property name="indent">
+      <number>5</number>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="action_tunnel">
+     <property name="maximumSize">
+      <size>
+       <width>32</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset theme="kt-start">
+       <normaloff>.</normaloff>.</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="action_open">
+     <property name="maximumSize">
+      <size>
+       <width>32</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset theme="internet-web-browser">
+       <normaloff>.</normaloff>.</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="action_settings">
+     <property name="maximumSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="icon">
+      <iconset theme="settings-configure">
+       <normaloff>.</normaloff>.</iconset>
      </property>
     </widget>
    </item>

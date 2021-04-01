@@ -6,30 +6,27 @@ A PyQt GUI to manage SSH tunnels
 
 ## Usage
 
-* Install dependencies: `pip3 install PyQt5`
-* Create a config: `cp config.example.json config.json`
+* Install dependencies: `pip3 install PyQt5 urllib yaml`
+* Create a config: `cp config.example.yml config.yml`
 * Run the app: `python3 app.py`
 * You can modify `sshtunnelmgr.desktop` and put in `~/.local/share/application` to create a app menu shortcut
 
 ## Configuration
 
-A sample configuration file provide as `config.example.json`. Here is one sample host entry.
+A sample configuration file provide as `config.example.yml`. Here is one sample host entry.
 
-```json
-{
-  "kubernetes": {
-    "remote_address": "10.10.10.11:30000",
-    "local_port": 30000,
-    "proxy_host": "another-proxy-host",
-    "browser_open": "http://127.0.0.1"
-  }
-}
+```yaml
+rabbitmq:
+  browser_open: http://127.0.0.1
+  local_port: 15672
+  proxy_host: demo-bastion
+  remote_address: 10.10.10.30:15672
 ```
 
 This entry, when clicked `Start`, will run the following SSH command to establish the tunnel.
 
 ```
-ssh -L 10.10.10.11:30000:127.0.0.1:30000 dummy-proxy-host
+ssh -L 127.0.0.1:15672:10.10.10.30:15672 demo-bastion
 ```
 
 The key `browser_open` is optional. If provided, it will open the provided URL in the system's default web browser. (The `local_port` will be appended to the URL automatically!)
@@ -52,4 +49,4 @@ If you are migrating from older versions of this tool, please change all `local_
 
 * Gracefully close SSH session instead of `kill`
 * Allow adding/editing/deleting hosts using the GUI
-* Store the config in `QSettings` instead of local JSON file
+* Store the config in `QSettings` instead of local yml file
