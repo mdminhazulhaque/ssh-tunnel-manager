@@ -74,6 +74,8 @@ class Tunnel(QWidget):
         self.action_open.clicked.connect(self.do_open_browser)
         self.action_tunnel.setStyleSheet(LANG.QSS_START)
         
+        self.process = None
+        
     def do_open_browser(self):
         browser_open = self.tunnelconfig.browser_open.text()
         if browser_open:
