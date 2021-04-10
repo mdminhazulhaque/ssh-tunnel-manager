@@ -4,8 +4,8 @@
 __author__ = "Md. Minhazul Haque"
 __license__ = "GPLv3"
 
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QApplication, QGridLayout, QDialog
-from PyQt5.QtCore import QProcess, Qt, QUrl
+from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QApplication, QGridLayout, QDialog, QMessageBox
+from PyQt5.QtCore import QProcess, Qt, QUrl, QSharedMemory
 from PyQt5.QtGui import QIcon, QDesktopServices, QPixmap
 from PyQt5 import uic
 import sys
@@ -140,5 +140,17 @@ class TunnelManager(QWidget):
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    tm = TunnelManager()
+    
+    sm = QSharedMemory("3866273d-f4d5-4bf3-b27b-772ca7915a61")
+    
+    if not sm.create(1):
+        mb = QMessageBox()
+        mb.setIcon(QMessageBox.Information)
+        mb.setText("SSH Tunnel Manager is already running")
+        mb.setWindowTitle("Oops!")
+        mb.setStandardButtons(QMessageBox.Ok)
+        mb.show()
+    else:
+        tm = TunnelManager()
+    
     sys.exit(app.exec_())
