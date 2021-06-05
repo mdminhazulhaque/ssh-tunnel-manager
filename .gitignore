@@ -1,2 +1,4 @@
 config.yml
 icons/*
+config.yml-*
+.directory
