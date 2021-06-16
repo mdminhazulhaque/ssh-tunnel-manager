@@ -1,15 +1,21 @@
 #!/usr/bin/python3
+
 # -*- coding: utf-8 -*-
 
 __author__ = "Md. Minhazul Haque"
 __license__ = "GPLv3"
 
 from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QApplication, QGridLayout, QDialog, QMessageBox
-from PyQt5.QtCore import QProcess, Qt, QUrl, QSharedMemory
+from PyQt5.QtCore import QProcess, Qt, QUrl, QSharedMemory, QTimer
 from PyQt5.QtGui import QIcon, QDesktopServices, QPixmap
 from PyQt5 import uic
 import sys
 import yaml
+import shutil
+import time
+import glob
+import os
+import requests
 from urllib.parse import urlparse
 
 CONF_FILE = "config.yml"
@@ -28,7 +34,7 @@ class LANG:
     PROXY_HOST = "proxy_host"
     BROWSER_OPEN = "browser_open"
     ICON = "icon"
-    ICON_WINDOW = "network-vpn"
+    ICON_WINDOW = "gcr-key"
     ICON_START = "kt-start"
     ICON_STOP = "kt-stop"
     ICON_HIDE = "gnumeric-column-hide"
@@ -49,7 +55,7 @@ class TunnelConfig(QDialog):
         self.proxy_host.setText(data.get(LANG.PROXY_HOST))
         self.browser_open.setText(data.get(LANG.BROWSER_OPEN))
         self.local_port.setValue(data.get(LANG.LOCAL_PORT))
-        
+                
     def as_dict(self):
         return {
             LANG.REMOTE_ADDRESS: self.remote_address.text(),
@@ -67,8 +73,13 @@ class Tunnel(QWidget):
         self.tunnelconfig.setWindowTitle(name)
         self.tunnelconfig.setModal(True)
         self.name.setText(name)
-        self.icon.setPixmap(QPixmap("./icons/"+name))
         
+        self.tunnelconfig.icon = F"./icons/{name}.png"
+        
+        if not os.path.exists(self.tunnelconfig.icon):
+          self.tunnelconfig.icon = "./icons/robi.png"
+        
+        self.icon.setPixmap(QPixmap(self.tunnelconfig.icon))
         self.action_tunnel.clicked.connect(self.do_tunnel)
         self.action_settings.clicked.connect(self.tunnelconfig.show)
         self.action_open.clicked.connect(self.do_open_browser)
@@ -92,10 +103,11 @@ class Tunnel(QWidget):
         
         if self.process == None:
             param = ["-L", F"127.0.0.1:{local_port}:{remote_address}", proxy_host]
+            print(param)
             
             self.process = QProcess()
             self.process.start(LANG.SSH, param)
-            
+                        
             self.action_tunnel.setStyleSheet(LANG.QSS_STOP)
             self.action_tunnel.setIcon(QIcon.fromTheme(LANG.ICON_STOP))
             
@@ -134,8 +146,14 @@ class TunnelManager(QWidget):
         for tunnel in self.tunnels:
             name = tunnel.name.text()
             data[name] = tunnel.tunnelconfig.as_dict()
+        timestamp = int(time.time())
+        shutil.copy(CONF_FILE, F"{CONF_FILE}-{timestamp}")
         with open(CONF_FILE, "w") as fp:
             yaml.dump(data, fp)
+        backup_configs = glob.glob(F"{CONF_FILE}-*")
+        if len(backup_configs) > 10:
+            for config in sorted(backup_configs, reverse=True)[10:]:
+                os.remove(config)
         event.accept()
     
 if __name__ == '__main__':
