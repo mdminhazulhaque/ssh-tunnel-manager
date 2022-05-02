@@ -55,7 +55,17 @@ class TunnelConfig(QDialog):
         self.proxy_host.setText(data.get(LANG.PROXY_HOST))
         self.browser_open.setText(data.get(LANG.BROWSER_OPEN))
         self.local_port.setValue(data.get(LANG.LOCAL_PORT))
-                
+        
+        self.remote_address.textChanged.connect(self.render_ssh_command)
+        self.proxy_host.textChanged.connect(self.render_ssh_command)
+        self.local_port.valueChanged.connect(self.render_ssh_command)
+        
+        self.render_ssh_command()
+    
+    def render_ssh_command(self):
+        ssh_command = F"ssh -L 127.0.0.1:{self.local_port.value()}:{self.remote_address.text()} {self.proxy_host.text()}"
+        self.ssh_command.setText(ssh_command)
+        
     def as_dict(self):
         return {
             LANG.REMOTE_ADDRESS: self.remote_address.text(),
@@ -96,18 +106,14 @@ class Tunnel(QWidget):
             QDesktopServices.openUrl(QUrl(new_url))
         
     def do_tunnel(self):
-        local_port = self.tunnelconfig.local_port.value()
-        remote_address = self.tunnelconfig.remote_address.text()
-        proxy_host = self.tunnelconfig.proxy_host.text()
-        browser_open = self.tunnelconfig.browser_open.text()
-        
         if self.process == None:
-            param = ["-L", F"127.0.0.1:{local_port}:{remote_address}", proxy_host]
-            print(param)
+            params = self.tunnelconfig.ssh_command.text().split(" ")
             
             self.process = QProcess()
-            self.process.start(LANG.SSH, param)
-                        
+            self.process.start(params[0], params[1:])
+            
+            print(self.process.pid())
+            
             self.action_tunnel.setStyleSheet(LANG.QSS_STOP)
             self.action_tunnel.setIcon(QIcon.fromTheme(LANG.ICON_STOP))
             
@@ -136,7 +142,7 @@ class TunnelManager(QWidget):
             self.grid.addWidget(tunnel, i, 0)
         
         self.setLayout(self.grid)
-        self.resize(300, 100)
+        self.resize(300, 500)
         self.setWindowTitle(LANG.TITLE)
         self.setWindowIcon(QIcon.fromTheme(LANG.ICON_WINDOW))
         self.show()

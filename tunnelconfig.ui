@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>386</width>
-    <height>202</height>
+    <width>429</width>
+    <height>228</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,6 +18,50 @@
     <widget class="QLabel" name="label_local_port">
      <property name="text">
       <string>Local Port</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="proxy_host">
+     <property name="placeholderText">
+      <string>proxy-host</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>188</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Save</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="remote_address">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="placeholderText">
+      <string>10.10.10.10:443</string>
      </property>
     </widget>
    </item>
@@ -51,34 +95,10 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_remote_address">
-     <property name="text">
-      <string>Remote Address</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="remote_address">
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="placeholderText">
-      <string>10.10.10.10:443</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="0">
     <widget class="QLabel" name="label_proxy_host">
      <property name="text">
       <string>Proxy Host</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="proxy_host">
-     <property name="placeholderText">
-      <string>proxy-host</string>
      </property>
     </widget>
    </item>
@@ -89,39 +109,29 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="ssh_command"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_ssh_command">
+     <property name="text">
+      <string>SSH Command</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_remote_address">
+     <property name="text">
+      <string>Remote Address</string>
+     </property>
+    </widget>
+   </item>
    <item row="3" column="1">
     <widget class="QLineEdit" name="browser_open">
      <property name="placeholderText">
       <string>https://127.0.0.1:8443</string>
      </property>
     </widget>
-   </item>
-   <item row="4" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>188</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QDialogButtonBox" name="buttonBox">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Save</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>
