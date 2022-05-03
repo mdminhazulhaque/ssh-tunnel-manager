@@ -6,9 +6,10 @@ __author__ = "Md. Minhazul Haque"
 __license__ = "GPLv3"
 
 from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QApplication, QGridLayout, QDialog, QMessageBox
-from PyQt5.QtCore import QProcess, Qt, QUrl, QSharedMemory, QTimer
+from PyQt5.QtCore import QProcess, Qt, QUrl, QSharedMemory
 from PyQt5.QtGui import QIcon, QDesktopServices, QPixmap
 from PyQt5 import uic
+
 import sys
 import yaml
 import shutil
@@ -16,6 +17,7 @@ import time
 import glob
 import os
 import requests
+
 from urllib.parse import urlparse
 
 CONF_FILE = "config.yml"
@@ -59,12 +61,18 @@ class TunnelConfig(QDialog):
         self.remote_address.textChanged.connect(self.render_ssh_command)
         self.proxy_host.textChanged.connect(self.render_ssh_command)
         self.local_port.valueChanged.connect(self.render_ssh_command)
+        self.copy.clicked.connect(self.do_copy_ssh_command)
         
         self.render_ssh_command()
     
     def render_ssh_command(self):
         ssh_command = F"ssh -L 127.0.0.1:{self.local_port.value()}:{self.remote_address.text()} {self.proxy_host.text()}"
         self.ssh_command.setText(ssh_command)
+        
+    def do_copy_ssh_command(self):
+        cb = QApplication.clipboard()
+        cb.clear(mode=cb.Clipboard)
+        cb.setText(self.ssh_command.text(), mode=cb.Clipboard)
         
     def as_dict(self):
         return {

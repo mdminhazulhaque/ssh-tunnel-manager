@@ -6,14 +6,28 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>429</width>
-    <height>228</height>
+    <width>508</width>
+    <height>238</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_remote_address">
+     <property name="text">
+      <string>Remote Address</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_browser_open">
+     <property name="text">
+      <string>Address to Open</string>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label_local_port">
      <property name="text">
@@ -21,14 +35,79 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="ssh_command">
+     <property name="font">
+      <font>
+       <family>Monospace</family>
+      </font>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_ssh_command">
+     <property name="text">
+      <string>SSH Command</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_proxy_host">
+     <property name="text">
+      <string>Proxy Host</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QPushButton" name="copy">
+     <property name="text">
+      <string>Copy</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="2">
+    <widget class="QLineEdit" name="browser_open">
+     <property name="font">
+      <font>
+       <family>Monospace</family>
+      </font>
+     </property>
+     <property name="placeholderText">
+      <string>https://127.0.0.1:8443</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="2">
     <widget class="QLineEdit" name="proxy_host">
+     <property name="font">
+      <font>
+       <family>Monospace</family>
+      </font>
+     </property>
      <property name="placeholderText">
       <string>proxy-host</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="0" colspan="2">
+   <item row="1" column="1" colspan="2">
+    <widget class="QLineEdit" name="remote_address">
+     <property name="font">
+      <font>
+       <family>Monospace</family>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="placeholderText">
+      <string>10.10.10.10:443</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="3">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer name="horizontalSpacer">
@@ -55,20 +134,15 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="remote_address">
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="placeholderText">
-      <string>10.10.10.10:443</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
+   <item row="0" column="1" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QSpinBox" name="local_port">
+       <property name="font">
+        <font>
+         <family>Monospace</family>
+        </font>
+       </property>
        <property name="maximum">
         <number>65365</number>
        </property>
@@ -95,46 +169,16 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_proxy_host">
-     <property name="text">
-      <string>Proxy Host</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_browser_open">
-     <property name="text">
-      <string>Address to Open</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLineEdit" name="ssh_command"/>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_ssh_command">
-     <property name="text">
-      <string>SSH Command</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_remote_address">
-     <property name="text">
-      <string>Remote Address</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLineEdit" name="browser_open">
-     <property name="placeholderText">
-      <string>https://127.0.0.1:8443</string>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>local_port</tabstop>
+  <tabstop>remote_address</tabstop>
+  <tabstop>proxy_host</tabstop>
+  <tabstop>browser_open</tabstop>
+  <tabstop>ssh_command</tabstop>
+  <tabstop>copy</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
