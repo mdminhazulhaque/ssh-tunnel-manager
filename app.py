@@ -47,7 +47,9 @@ class LANG:
     HEADER_REMOTE_ADDRESS = "Remote Address"
     HEADER_JUMP_HOST = "Proxy Host"
     HEADER_ACTION = "Action"
-    
+    SSH_KILL = "killall ssh"
+    ICON_SSH_KILL = "tab-close"
+
 class TunnelConfig(QDialog):
     def __init__(self, parent, data):
         super(TunnelConfig, self).__init__(parent)
@@ -114,26 +116,32 @@ class Tunnel(QWidget):
             QDesktopServices.openUrl(QUrl(new_url))
         
     def do_tunnel(self):
-        if self.process == None:
-            params = self.tunnelconfig.ssh_command.text().split(" ")
-            
-            self.process = QProcess()
-            self.process.start(params[0], params[1:])
-            
-            print(self.process.pid())
-            
-            self.action_tunnel.setStyleSheet(LANG.QSS_STOP)
-            self.action_tunnel.setIcon(QIcon.fromTheme(LANG.ICON_STOP))
-            
-            self.do_open_browser()
+        if self.process:
+            self.stop_tunnel()
         else:
+            self.start_tunnel()
+    
+    def start_tunnel(self):
+        params = self.tunnelconfig.ssh_command.text().split(" ")
+        
+        self.process = QProcess()
+        self.process.start(params[0], params[1:])
+                    
+        self.action_tunnel.setStyleSheet(LANG.QSS_STOP)
+        self.action_tunnel.setIcon(QIcon.fromTheme(LANG.ICON_STOP))
+        
+        self.do_open_browser()
+    
+    def stop_tunnel(self):
+        try:
             self.process.kill()
-            self.process.close()
             self.process = None
-            
-            self.action_tunnel.setIcon(QIcon.fromTheme(LANG.ICON_START))
-            self.action_tunnel.setStyleSheet(LANG.QSS_START)
-
+        except:
+            pass
+        
+        self.action_tunnel.setIcon(QIcon.fromTheme(LANG.ICON_START))
+        self.action_tunnel.setStyleSheet(LANG.QSS_START)
+        
 class TunnelManager(QWidget):
     def __init__(self):
         super().__init__()
@@ -149,12 +157,24 @@ class TunnelManager(QWidget):
             self.tunnels.append(tunnel)
             self.grid.addWidget(tunnel, i, 0)
         
+        self.kill_button = QPushButton(LANG.SSH_KILL)
+        self.kill_button.setIcon(QIcon.fromTheme(LANG.ICON_SSH_KILL))
+        self.kill_button.setFocusPolicy(Qt.NoFocus)
+        self.kill_button.clicked.connect(self.do_killall_ssh)
+        
+        self.grid.addWidget(self.kill_button, i+1, 0)
+        
         self.setLayout(self.grid)
         self.resize(300, 500)
         self.setWindowTitle(LANG.TITLE)
         self.setWindowIcon(QIcon.fromTheme(LANG.ICON_WINDOW))
         self.show()
     
+    def do_killall_ssh(self):
+        for tunnel in self.tunnels:
+            tunnel.stop_tunnel()
+        os.system(LANG.SSH_KILL)
+            
     def closeEvent(self, event):
         data = {}
         for tunnel in self.tunnels:
