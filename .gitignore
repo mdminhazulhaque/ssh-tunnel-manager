@@ -1,13 +1,7 @@
 config.yml
-icons/*
 config.yml-*
 .directory
 
-!icons/robi.png
-!icons/robi.svg
-!icons/binge.png
-!icons/binge.svg
-!icons/harbor.png
-!icons/gitlab.png
-!icons/robi.svg
-!icons/kubernetes.png
+icons/robi*
+icons/binge*
+icons/nodeport*

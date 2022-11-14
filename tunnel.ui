@@ -76,8 +76,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset theme="kt-start">
-       <normaloff>.</normaloff>.</iconset>
+      <iconset>
+       <normaloff>icons/start.png</normaloff>icons/start.png</iconset>
      </property>
     </widget>
    </item>
@@ -96,8 +96,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset theme="internet-web-browser">
-       <normaloff>.</normaloff>.</iconset>
+      <iconset>
+       <normaloff>icons/browser.png</normaloff>icons/browser.png</iconset>
      </property>
     </widget>
    </item>
@@ -113,8 +113,8 @@
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="icon">
-      <iconset theme="settings-configure">
-       <normaloff>.</normaloff>.</iconset>
+      <iconset>
+       <normaloff>icons/settings.png</normaloff>icons/settings.png</iconset>
      </property>
     </widget>
    </item>

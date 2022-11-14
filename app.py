@@ -36,11 +36,10 @@ class LANG:
     PROXY_HOST = "proxy_host"
     BROWSER_OPEN = "browser_open"
     ICON = "icon"
-    ICON_WINDOW = "gcr-key"
-    ICON_START = "kt-start"
-    ICON_STOP = "kt-stop"
-    ICON_HIDE = "gnumeric-column-hide"
-    ICON_UNHIDE = "gnumeric-column-unhide"
+    ICON_WINDOW = "icons/settings.png"
+    ICON_START = "icons/start.png"
+    ICON_STOP = "icons/stop.png"
+    ICON_SSH_KILL = "icons/kill.png"
     SSH = "ssh"
     HEADER_NAME = "Name"
     HEADER_LOCAL_ADDRESS = "Local Address"
@@ -48,7 +47,6 @@ class LANG:
     HEADER_JUMP_HOST = "Proxy Host"
     HEADER_ACTION = "Action"
     SSH_KILL = "killall ssh"
-    ICON_SSH_KILL = "tab-close"
 
 class TunnelConfig(QDialog):
     def __init__(self, parent, data):
@@ -128,7 +126,7 @@ class Tunnel(QWidget):
         self.process.start(params[0], params[1:])
                     
         self.action_tunnel.setStyleSheet(LANG.QSS_STOP)
-        self.action_tunnel.setIcon(QIcon.fromTheme(LANG.ICON_STOP))
+        self.action_tunnel.setIcon(QIcon(LANG.ICON_STOP))
         
         self.do_open_browser()
     
@@ -139,7 +137,7 @@ class Tunnel(QWidget):
         except:
             pass
         
-        self.action_tunnel.setIcon(QIcon.fromTheme(LANG.ICON_START))
+        self.action_tunnel.setIcon(QIcon(LANG.ICON_START))
         self.action_tunnel.setStyleSheet(LANG.QSS_START)
         
 class TunnelManager(QWidget):
@@ -158,7 +156,7 @@ class TunnelManager(QWidget):
             self.grid.addWidget(tunnel, i, 0)
         
         self.kill_button = QPushButton(LANG.SSH_KILL)
-        self.kill_button.setIcon(QIcon.fromTheme(LANG.ICON_SSH_KILL))
+        self.kill_button.setIcon(QIcon(LANG.ICON_SSH_KILL))
         self.kill_button.setFocusPolicy(Qt.NoFocus)
         self.kill_button.clicked.connect(self.do_killall_ssh)
         
@@ -167,7 +165,7 @@ class TunnelManager(QWidget):
         self.setLayout(self.grid)
         self.resize(300, 500)
         self.setWindowTitle(LANG.TITLE)
-        self.setWindowIcon(QIcon.fromTheme(LANG.ICON_WINDOW))
+        self.setWindowIcon(QIcon(LANG.ICON_WINDOW))
         self.show()
     
     def do_killall_ssh(self):
