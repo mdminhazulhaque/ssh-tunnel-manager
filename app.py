@@ -101,7 +101,6 @@ class Tunnel(QWidget):
         self.action_tunnel.clicked.connect(self.do_tunnel)
         self.action_settings.clicked.connect(self.tunnelconfig.show)
         self.action_open.clicked.connect(self.do_open_browser)
-        self.action_tunnel.setStyleSheet(LANG.QSS_START)
         
         self.process = None
         
@@ -125,7 +124,6 @@ class Tunnel(QWidget):
         self.process = QProcess()
         self.process.start(params[0], params[1:])
                     
-        self.action_tunnel.setStyleSheet(LANG.QSS_STOP)
         self.action_tunnel.setIcon(QIcon(LANG.ICON_STOP))
         
         self.do_open_browser()
@@ -138,7 +136,6 @@ class Tunnel(QWidget):
             pass
         
         self.action_tunnel.setIcon(QIcon(LANG.ICON_START))
-        self.action_tunnel.setStyleSheet(LANG.QSS_START)
         
 class TunnelManager(QWidget):
     def __init__(self):
@@ -146,7 +143,7 @@ class TunnelManager(QWidget):
         
         with open(CONF_FILE, "r") as fp:
             data = yaml.load(fp, Loader=yaml.FullLoader)
-            
+
         self.grid = QGridLayout(self)
         self.tunnels = []
         
@@ -163,7 +160,7 @@ class TunnelManager(QWidget):
         self.grid.addWidget(self.kill_button, i+1, 0)
         
         self.setLayout(self.grid)
-        self.resize(300, 500)
+        self.resize(10, 10)
         self.setWindowTitle(LANG.TITLE)
         self.setWindowIcon(QIcon(LANG.ICON_WINDOW))
         self.show()
@@ -198,9 +195,16 @@ if __name__ == '__main__':
         mb.setIcon(QMessageBox.Information)
         mb.setText("SSH Tunnel Manager is already running")
         mb.setWindowTitle("Oops!")
-        mb.setStandardButtons(QMessageBox.Ok)
+        mb.setStandardButtons(QMessageBox.Close)
         mb.show()
-    else:
+    elif not os.path.isfile(CONF_FILE):
+        mb = QMessageBox()
+        mb.setIcon(QMessageBox.Information)
+        mb.setText(F"No {CONF_FILE} file found in application directory")
+        mb.setWindowTitle("Oops!")
+        mb.setStandardButtons(QMessageBox.Close)
+        mb.show()
+    else:        
         tm = TunnelManager()
-    
+            
     sys.exit(app.exec_())

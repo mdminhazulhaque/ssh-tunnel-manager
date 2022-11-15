@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>360</width>
-    <height>32</height>
+    <height>36</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -53,6 +53,11 @@
    </item>
    <item>
     <widget class="QLabel" name="name">
+     <property name="font">
+      <font>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -79,6 +84,15 @@
       <iconset>
        <normaloff>icons/start.png</normaloff>icons/start.png</iconset>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -99,6 +113,15 @@
       <iconset>
        <normaloff>icons/browser.png</normaloff>icons/browser.png</iconset>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -115,6 +138,15 @@
      <property name="icon">
       <iconset>
        <normaloff>icons/settings.png</normaloff>icons/settings.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
