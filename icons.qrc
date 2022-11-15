@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="browser.png">icons/browser.png</file>
+        <file alias="kill.png">icons/kill.png</file>
+        <file alias="settings.png">icons/settings.png</file>
+        <file alias="start.png">icons/start.png</file>
+        <file alias="stop.png">icons/stop.png</file>
+        <file alias="tunnel.png">icons/tunnel.png</file>
+    </qresource>
+</RCC>

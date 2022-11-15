@@ -1,12 +1,16 @@
 # SSH Tunnel Manager
 
-A PyQt GUI to manage SSH tunnels
+A cross-platform, PyQt GUI to manage SSH tunnels
 
-![SSH Tunnel Manager](screenshot.png)
+![SSH Tunnel Manager](.screenshot.png)
 
-## Usage
+## Installation (Standalone)
 
-* Install dependencies: `pip3 install PyQt5 urllib yaml`
+You can download the standalone executable from the [Release](https://github.com/mdminhazulhaque/ssh-tunnel-manager/releases) section.
+
+## Installation (From Source)
+
+* Install dependencies: `pip install -r requirements.txt`
 * Create a config: `cp config.example.yml config.yml`
 * Run the app: `python3 app.py`
 * You can modify `sshtunnelmgr.desktop` and put in `~/.local/share/application` to create a app menu shortcut
@@ -33,11 +37,19 @@ The key `browser_open` is optional. If provided, it will open the provided URL i
 
 The application saves the tunnel information into a `dict` and can `kill` it when the `Stop` button is clicked.
 
-> WARNING: To allow SSH to bind on privileged ports, run `sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/ssh`
+## SSH bind on Privileged Ports
+
+Binding on privileged ports will fail unless the user/program has administrative access.
+
+For Linux/macOS, run the following command to allow SSH program to allow binding on privileged ports.
+
+```bash
+sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/ssh
+```
 
 ## Icons
 
-If you put image files (png/jpg/bmp) in `./icons/` with the same filename as the `name` of tunnel, it will appear as icon for that specific entry.
+If you put image files (png/jpg/bmp) in `./icons/` with the same filename as the `name` field of tunnel configuration, it will appear as icon for that specific entry.
 
 For example, the tunnel identifier is `kubernetes`, so `./icons/kubernetes.png` will be set as the form's icon.
 

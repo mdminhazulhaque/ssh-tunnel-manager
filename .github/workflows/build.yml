@@ -1,0 +1,87 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  upload-release:
+
+    runs-on: ubuntu-18.04
+    needs:
+    - build-linux
+    - build-windows
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: create release
+      id: create_release
+      uses: actions/create-release@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false   
+    - name: download artifacts
+      uses: actions/download-artifact@v1
+      with:
+        name: uploads
+    - name: upload linux
+      id: upload-linux
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./uploads/app-linux.bin
+        asset_name: ssh-tunnel-manager-linux-${{ github.ref_name }}
+        asset_content_type: application/x-executable
+    - name: upload windows
+      id: upload-windows
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./uploads/app-windows.exe
+        asset_name: ssh-tunnel-manager-windows-${{ github.ref_name }}.exe
+        asset_content_type: application/x-dosexec
+
+  build-linux:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.8.10
+    - name: build executable
+      run: |
+        pip install -r requirements.txt
+        pip install pyinstaller
+        pyinstaller --onefile --noconsole --name app-linux.bin app.py
+    - name: upload artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: uploads
+        path: dist/app-linux.bin
+
+  build-windows:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.8.10
+    - name: build executable
+      run: |
+        pip install -r requirements.txt
+        pip install pyinstaller
+        pyinstaller --onefile --noconsole --name app-windows.exe app.py
+    - name: upload artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: uploads
+        path: dist/app-windows.exe
