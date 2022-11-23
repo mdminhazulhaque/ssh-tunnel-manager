@@ -10,6 +10,7 @@ from PyQt5.QtCore import QProcess, Qt, QUrl, QSharedMemory
 from PyQt5.QtGui import QIcon, QDesktopServices, QPixmap
 
 from urllib.parse import urlparse
+from deepdiff import DeepDiff
 
 import sys
 import yaml
@@ -122,13 +123,13 @@ class TunnelManager(QWidget):
         super().__init__()
         
         with open(CONF_FILE, "r") as fp:
-            data = yaml.load(fp, Loader=yaml.FullLoader)
+            self.data = yaml.load(fp, Loader=yaml.FullLoader)
 
         self.grid = QGridLayout(self)
         self.tunnels = []
         
-        for i, name in enumerate(sorted(data.keys())):
-            tunnel = Tunnel(name, data[name])
+        for i, name in enumerate(sorted(self.data.keys())):
+            tunnel = Tunnel(name, self.data[name])
             self.tunnels.append(tunnel)
             self.grid.addWidget(tunnel, i, 0)
         
@@ -158,14 +159,18 @@ class TunnelManager(QWidget):
         for tunnel in self.tunnels:
             name = tunnel.ui.name.text()
             data[name] = tunnel.tunnelconfig.as_dict()
-        timestamp = int(time.time())
-        shutil.copy(CONF_FILE, F"{CONF_FILE}-{timestamp}")
-        with open(CONF_FILE, "w") as fp:
-            yaml.dump(data, fp)
-        backup_configs = glob.glob(F"{CONF_FILE}-*")
-        if len(backup_configs) > 10:
-            for config in sorted(backup_configs, reverse=True)[10:]:
-                os.remove(config)
+        
+        changed = DeepDiff(self.data, data, ignore_order=True)
+        
+        if changed:
+            timestamp = int(time.time())
+            shutil.copy(CONF_FILE, F"{CONF_FILE}-{timestamp}")
+            with open(CONF_FILE, "w") as fp:
+                yaml.dump(data, fp)
+            backup_configs = glob.glob(F"{CONF_FILE}-*")
+            if len(backup_configs) > 10:
+                for config in sorted(backup_configs, reverse=True)[10:]:
+                    os.remove(config)
         event.accept()
     
 if __name__ == '__main__':
