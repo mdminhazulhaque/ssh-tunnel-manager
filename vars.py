@@ -14,6 +14,7 @@ class LANG:
 class KEYS:
     REMOTE_ADDRESS = "remote_address"
     LOCAL_PORT = "local_port"
+    SSH_PORT = "ssh_port"
     PROXY_HOST = "proxy_host"
     BROWSER_OPEN = "browser_open"
     
