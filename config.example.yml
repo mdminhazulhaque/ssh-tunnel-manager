@@ -3,12 +3,15 @@ gitlab:
   local_port: 443
   proxy_host: demo-bastion
   remote_address: 10.10.10.10:443
+  ssh_port: 22
 postgresql:
   local_port: 5432
   proxy_host: demo-bastion
   remote_address: 10.10.10.20:9999
+  ssh_port: 2222
 rabbitmq:
   browser_open: http://127.0.0.1
   local_port: 15672
   proxy_host: demo-bastion
   remote_address: 10.10.10.30:15672
+  ssh_port: 22

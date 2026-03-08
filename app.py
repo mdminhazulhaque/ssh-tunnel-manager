@@ -34,16 +34,18 @@ class TunnelConfig(QDialog):
         self.ui.proxy_host.setText(data.get(KEYS.PROXY_HOST))
         self.ui.browser_open.setText(data.get(KEYS.BROWSER_OPEN))
         self.ui.local_port.setValue(data.get(KEYS.LOCAL_PORT))
+        self.ui.ssh_port.setValue(data.get(KEYS.SSH_PORT))
         
         self.ui.remote_address.textChanged.connect(self.render_ssh_command)
         self.ui.proxy_host.textChanged.connect(self.render_ssh_command)
         self.ui.local_port.valueChanged.connect(self.render_ssh_command)
+        self.ui.ssh_port.valueChanged.connect(self.render_ssh_command)
         self.ui.copy.clicked.connect(self.do_copy_ssh_command)
         
         self.render_ssh_command()
     
     def render_ssh_command(self):
-        ssh_command = F"ssh -L 127.0.0.1:{self.ui.local_port.value()}:{self.ui.remote_address.text()} {self.ui.proxy_host.text()}"
+        ssh_command = F"ssh -p {self.ui.ssh_port.value()} -L 127.0.0.1:{self.ui.local_port.value()}:{self.ui.remote_address.text()} {self.ui.proxy_host.text()}"
         self.ui.ssh_command.setText(ssh_command)
         
     def do_copy_ssh_command(self):
@@ -56,6 +58,7 @@ class TunnelConfig(QDialog):
             KEYS.PROXY_HOST: self.ui.proxy_host.text(),
             KEYS.BROWSER_OPEN: self.ui.browser_open.text(),
             KEYS.LOCAL_PORT: self.ui.local_port.value(),
+            KEYS.SSH_PORT: self.ui.ssh_port.value(),
         }
 
 class Tunnel(QWidget):
